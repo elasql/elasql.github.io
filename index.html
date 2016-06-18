@@ -1,10 +1,225 @@
 <!DOCTYPE html>
-  <html>
-  <head>
-    <title>ElaSQL</title>
-  </head>
+<html lang="en">
 
-  <body>
-    <h1>ElaSQL Test</h1>
-  </body>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ElaSQL - A relational database system made scalable, available, and elastic.</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/one-page-wonder.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">ElaSQL</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#architecture">Architecture</a>
+                    </li>
+                    <li>
+                        <a href="#key-features">Key Features</a>
+                    </li>
+                    <li>
+                        <a href="#code-and-license">Code and License</a>
+                    </li>
+                    <li>
+                        <a href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Full Width Image Header -->
+    <header class="header-image">
+        <div class="headline">
+            <div class="container">
+                <div class="row">
+                    <h1><span class="green-text">Ela</span><span class="blue-text"><strong>SQL</strong></span></h1>
+                    <h2>A relational database system made scalable, available, and elastic.</h2>
+                    <a href="https://github.com/elasql/elasql" class="btn btn-primary btn-lg animated fadeInUp">Get ElaSQL<br />
+                    <small>Version: 0.1.0</small>
+                    </a>
+                </div>
+                <div class="row">
+                    <div class="col-sm-offset-1 col-sm-10 ">
+                        <p>ElaSQL is a distributed relational database system prototype that aims at offering high scalability, high availability, and elasticity to the on-line transaction processing (OLTP) applications.</p>
+                        <p>To achieve high scalability, availability, and elasticity (SAE for short), many recent database systems (collectively, NoSQL) drop the support of relational data model and distributed transactions. The relational data model is
+                            replaced by less expressive key-value pairs (<a href="http://redis.io/">Redis</a>), documents (<a href="https://www.mongodb.com/">MongoDB</a>), or entity-groups (<a href="http://research.google.com/archive/bigtable.html">bigtable</a>, <a href="http://cassandra.apache.org/">cassandra</a>). And the application developers are required to code around distributed transactions when necessary,
+                            adding complexity to the applications. </p>
+                        <p>ElaSQL does not trade the relational model and distributed transactions for SAE. Instead, it gives up ad-hoc transactions, i.e., transactions whose operations may be determined after start. Today, OLTP application developers (e.g.,
+                            web application developers) usually design their transactions carefully and issue transactions via stored procedures. Therefore, it’s worthy to explore new system design that exchanges ad-hoc transactions for better SAE.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-offset-1 col-sm-10">
+                        <h3>Cite</h3>
+                        <p>
+                            To cite ElaSQL, please add the following to your BibTex:
+                        </p>
+                        <pre>
+@inproceedings{shwu2016tpart,
+  title={T-Part: Partitioning of Transactions for Forward-Pushing in Deterministic Database Systems},
+  author={Shan-Hung Wu and Tsai-Yu Feng and Meng-Kai Liao and Shao-Kan Pi and Yu-Shan Lin},
+  booktitle={Proceedings of the 2016 ACM SIGMOD International Conference on Management of Data (SIGMOD)},
+  year={2012},
+  organization={ACM}
+}
+                    </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="architecture" class="section">
+        <div class="container">
+            <h1>Architecture</h1>
+            <div class="row">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <p>ElaSQL runs on multiple datacenters, each of which owns a full replica of data. Within each datacenter, the data are partitioned and placed on a cluster of machines/nodes. ElaSQL supports relational model and does not require data
+                        to be perfectly partitionable. It handles distributed transactions across partitions in a replica. Therefore, it is suitable for complex, large-scale OLTP applications such as real-time data analysis, financial, and social networking
+                        services.
+                    </p>
+                    <img class="img-responsive wow center-block" src="img/architecture.png" alt="ElaSQL Architecture" />
+                    <p>Without serving ad-hoc transactions, ElaSQL is able to pre-order the transaction requests totally (i.e., across all replicas/datacenters and partitions/machines). It then executes the transactions while making sure that the net effect
+                        will be equivalent to that of serial execution of transactions following the total order. To do so, the Scheduler on each machine, once getting the total-ordered transaction requests, decides which transactions are “relevant” ones
+                        that should be handled by the Transaction Manager residing on the same machine. Once the relevant transactions are determined, the Transaction Manager executes these transactions concurrently using multiple threads, and, in the
+                        presence of distributed transactions, communicate with other machines (within the same datacenter) holding different data partitions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="key-features" class="section">
+        <div class="container">
+            <!-- Page Content -->
+
+            <h1>Key Features</h1>
+
+            <!-- First Featurette -->
+            <div class="row">
+                <div class="featurette col-sm-offset-1 col-sm-10">
+                    <img class="featurette-image img-responsive pull-right " src="img/elasql-availability.png" alt="Availability" />
+                    <h3 class="featurette-heading ">Highly Available, Strong Consistent
+            </h3>
+                    <p class=" ">ElaSQL assumes that datacenters are geographically separated across WAN to sustain the failure of an entire datacenter. Different from most traditional distributed relational database systems which adopt Lazy-replication techniques
+                        giving only weak consistency between replicas, ElaSQL ensures that the replicas are always strongly consistent. It achieve so by making the results of transaction execution on each machine <strong>deterministic</strong> to the
+                        total order; that is, regardless of transaction rollback, deadlock, machine failure, or any other events, the final results on each machine will be the same as those of serial transaction execution following the total order. ElaSQL
+                        implements many techniques proposed by the <a href="http://dl.acm.org/citation.cfm?id=2213838">Calvin</a> paper to achieve determinism, and with that ElaSQL can avoid any agreement protocol (e.g., two-phase commit (2PC)) running at the end of each transaction. </p>
+                    <p class="">
+                        Note that the total-ordering comes at the cost of delay (usually hundreds of milliseconds). So the transaction latency given by ElaSQL may be higher than that of lazy alternatives. However, as compared to traditional eager-replication techniques (e.g.,
+                        those running 2PC), this delay does not count into the contention footprint in transaction execution, therefore has no impact on the system throughput.
+                    </p>
+                </div>
+
+                <hr class="featurette-divider ">
+            </div>
+
+            <div class="row">
+                <!-- Second Featurette -->
+                <div class="featurette col-sm-offset-1 col-sm-10">
+                    <img class="featurette-image img-responsive pull-left " src="img/elasql-scalability.png" alt="Scalability" />
+                    <h3 class="featurette-heading ">Scale-Out on Hundreds of Machines
+            </h3>
+                    <p class=" ">Inside each datacenter, ElaSQL can readily run on a cluster of hundreds of machines. It implements <a href="http://www.cs.nthu.edu.tw/~shwu/pubs/shwu-sigmod-16.pdf">T-Part</a> as the core scheduling and transaction processing algorithms and handles the distributed transactions in a super lightweight
+                        manner. ElaSQL does not support ad-hoc transactions and assumes that each transaction request is issued as a call to a stored procedure. This make it easy to analysis the read set and write set of a transaction before the transaction
+                        starts. Furthermore, with the read and write sets, the dependency between transactions can be known early. Based on this dependency, each transaction, when being executed by a Transaction Manager on some machine, knows exactly
+                        which later transactions (which may not have started yet) will read its writes, and can <strong>push forward</strong> the writes to the corresponding machines immediately after commit. Then, upon execution, a later transaction
+                        on another machine has no need to stop and fetch remote data because the data were pushed by previous transactions and may have arrived already. This (proactive) forward-pushing replaces the (reactive) data fetching mechanism adopted
+                        by traditional distributed database systems (where there is usually a Transaction Coordinator that fetches data required by a transaction from other machines only after the transaction starts) causing transaction stalls due to
+                        network latency and drop of system throughput.
+                    </p>
+                </div>
+
+                <hr class="featurette-divider ">
+            </div>
+            <!-- Third Featurette -->
+            <div class="row">
+                <div class="featurette col-sm-offset-1 col-sm-10">
+                    <img class="featurette-image img-responsive pull-right " src="img/elasql-elasticity.png" alt="Elasticity" />
+                    <h3 class="featurette-heading ">Elastic and Economic (Work in Progress)
+            </h3>
+                    <p class=" ">ElaSQL is designed to be elastic. It moves data around in a datacenter if some machines become too hot. It also adds/removes machines automatically in correspondence of the workload changes. This makes ElaSQL an economic choice for
+                        applications that rent machines in the cloud and face dynamic workloads, as a cloud platform usually charges per resource/machine usage. Currently, we are working on an efficient version of <a href="http://dl.acm.org/citation.cfm?id=1989356">Zephyr</a>, a <strong>live data-migration</strong>                        technique. More details will be announced later.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.container -->
+
+    <section id="code-and-license" class="section">
+        <div class="container">
+            <h1>Code and License</h1>
+            <div class="row">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <p>ElasSQL is an open-source project written in Java. The source code is released under the Apache 2.0 license.</p>
+                    <a href="https://github.com/elasql/elasql" class="btn btn-primary btn-lg animated fadeInUp">Get ElaSQL<br />
+                    <small>Version: 0.1.0</small>
+                    </a>
+                    <p>DB researchers/developers who are interested in this project are welcome to join us. And we love to hear your feedback. Please feel free to contact us at <a href="support@elasql.org">support@elasql.org</a>.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <h3>Acknowledgement
+            </h3>
+                    <p>Some ElaSQL components are based on the <a href="http://www.vanilladb.org">VanillaDB</a> project---the total-ordering module uses the <a href="http://dl.acm.org/citation.cfm?id=2056409">Zab</a> implemented by VanillaComm, and the VanillaCore is used
+                        as the underlying DB engine on each machine. We thank the VanillaDB team for their great support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section about-section">
+        <h1>About</h1>
+        <div class="row">
+            <div class="col-sm-offset-2 col-sm-8">
+                <p>Copyright © by elasql.org. All rights reserved. </p>
+                <p>Please contact <a href="support@elasql.org">support@elasql.org</a> for custom support.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js "></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js "></script>
+
+</body>
+
 </html>

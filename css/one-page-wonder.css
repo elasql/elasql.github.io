@@ -1,0 +1,190 @@
+/*!
+ * Start Bootstrap - One Page Wonder HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+body {
+    margin-top: 50px;
+    /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+.row {
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+h1 {
+    font-size: 60px;
+    color: #007acc;
+    text-align: center;
+}
+h2 {
+    font-size: 30px;
+    color: grey;
+    text-align: center;
+}
+h3, pre{
+    text-align: left;
+}
+p {
+    text-align: justify;
+}
+.navbar {
+    background-color: #007acc;
+}
+.navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav > li > a {
+  color: lightgrey;
+}
+.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-nav> li> a:hover {
+    color: white;
+}
+.section{
+  padding-top: 100px;
+  padding-bottom: 100px;
+  border-top: solid 2px #eee;
+  text-align: center;
+}
+.headline {
+    text-align: center;
+    padding: 120px 0;
+}
+.headline .green-text {
+    color: #00b33c;
+}
+.headline .blue-text {
+    color: #007acc;
+}
+.btn-primary, .btn-primary:visited {
+    text-decoration: none;
+    background-color: #00b33c;
+    border-width: 0;
+    margin: 10px;
+    transition: 0.3s ease;
+    font-size: 20px;
+}
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+    background-color: #007acc;
+}
+.featurette-divider {
+    margin: 80px 0;
+}
+.featurette {
+    overflow: hidden;
+}
+.featurette-image.pull-left {
+    margin-right: 40px;
+}
+.featurette-image.pull-right {
+    margin-left: 40px;
+}
+.featurette-heading {
+    font-size: 40px;
+}
+footer {
+    margin: 50px 0;
+}
+@media(max-width:1200px) {
+    h1 {
+        font-size: 55px;
+    }
+    h2 {
+        font-size: 28px;
+    }
+    .featurette-divider {
+        margin: 50px 0;
+    }
+    .featurette-image.pull-left {
+        margin-right: 20px;
+    }
+    .featurette-image.pull-right {
+        margin-left: 20px;
+    }
+    .featurette-heading {
+        font-size: 30px;
+    }
+}
+@media(max-width:991px) {
+    h1 {
+        font-size: 50px;
+    }
+    h2 {
+        font-size: 25px;
+    }
+    .featurette-divider {
+        margin: 40px 0;
+    }
+    .featurette-image {
+        max-width: 50%;
+    }
+    .featurette-image.pull-left {
+        margin-right: 10px;
+    }
+    .featurette-image.pull-right {
+        margin-left: 10px;
+    }
+    .featurette-heading {
+        font-size: 25px;
+    }
+}
+@media(max-width:768px) {
+    .container {
+        margin: 0 15px;
+    }
+    .featurette-divider {
+        margin: 40px 0;
+    }
+    .featurette-heading {
+        font-size: 20px;
+    }
+}
+@media(max-width:668px) {
+    h1 {
+        font-size: 45px;
+    }
+    h2 {
+        font-size: 22px;
+    }
+    .featurette-divider {
+        margin: 30px 0;
+    }
+}
+@media(max-width:640px) {
+    .headline {
+        padding: 75px 0 25px 0;
+    }
+    h1 {
+        font-size: 40px;
+    }
+    h2 {
+        font-size: 20;
+    }
+}
+@media(max-width:375px) {
+    .featurette-divider {
+        margin: 10px 0;
+    }
+    .featurette-image {
+        max-width: 100%;
+    }
+    .featurette-image.pull-left {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .featurette-image.pull-right {
+        margin-bottom: 10px;
+        margin-left: 0;
+    }
+}
+.about-section{
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-color: grey;
+    color: white;
+}
+
+.about-section h1{
+  color: white;
+}
+
+.about-section p{
+  text-align: center;
+}
